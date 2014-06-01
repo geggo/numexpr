@@ -138,14 +138,36 @@ static void vsConj(MKL_INT n, const float* x1, float* dest)
 };
 #endif
 
+//TODO
+/* Fake vvconj */
+#ifdef USE_VECLIB
+static void vvconjf(float* dest, const float* x1, const int * n)
+{
+    int j;
+    for (j=0; j<*n; j++) {
+	dest[j] = x1[j];
+    };
+};
+#endif
+
 #ifdef USE_VML
 typedef void (*FuncFFPtr_vml)(MKL_INT, const float*, float*);
 FuncFFPtr_vml functions_ff_vml[] = {
-#define FUNC_FF(fop, s, f, f_win32, f_vml) f_vml,
+#define FUNC_FF(fop, s, f, f_win32, f_vml, ...) f_vml,
 #include "functions.hpp"
 #undef FUNC_FF
 };
 #endif
+
+#ifdef USE_VECLIB
+typedef void (*FuncFFPtr_veclib)(float*, const float*, const int *);
+FuncFFPtr_veclib functions_ff_veclib[] = {
+#define FUNC_FF(fop, s, f, f_win32, f_vml, f_veclib) f_veclib,
+#include "functions.hpp"
+#undef FUNC_FF
+};
+#endif
+
 
 typedef float (*FuncFFFPtr)(float, float);
 
@@ -175,7 +197,16 @@ static void vsfmod(MKL_INT n, const float* x1, const float* x2, float* dest)
 
 typedef void (*FuncFFFPtr_vml)(MKL_INT, const float*, const float*, float*);
 FuncFFFPtr_vml functions_fff_vml[] = {
-#define FUNC_FFF(fop, s, f, f_win32, f_vml) f_vml,
+#define FUNC_FFF(fop, s, f, f_win32, f_vml, ...) f_vml,
+#include "functions.hpp"
+#undef FUNC_FFF
+};
+#endif
+
+#ifdef USE_VECLIB
+typedef void (*FuncFFFPtr_veclib)(float*, const float*, const float*, const int*);
+FuncFFFPtr_veclib functions_fff_veclib[] = {
+#define FUNC_FFF(fop, s, f, f_win32, f_vml, f_veclib) f_veclib,
 #include "functions.hpp"
 #undef FUNC_FFF
 };
@@ -208,6 +239,28 @@ FuncDDPtr_vml functions_dd_vml[] = {
 #undef FUNC_DD
 };
 #endif
+
+/* Fake vvconj */
+#ifdef USE_VECLIB
+static void vvconj(double* dest, const double* x1, const int * n)
+{
+    int j;
+    for (j=0; j<*n; j++) {
+	dest[j] = x1[j];
+    };
+};
+#endif
+
+
+#ifdef USE_VECLIB
+typedef void (*FuncDDPtr_veclib)(double*, const double*, const int *);
+FuncDDPtr_veclib functions_dd_veclib[] = {
+#define FUNC_DD(fop, s, f, f_vml, f_veclib) f_veclib,
+#include "functions.hpp"
+#undef FUNC_DD
+};
+#endif
+
 
 typedef double (*FuncDDDPtr)(double, double);
 
@@ -1049,7 +1102,8 @@ NumExpr_run(NumExprObject *self, PyObject *args, PyObject *kwds)
             goto fail;
         }
         op_flags[i+1] = NPY_ITER_READONLY|
-#ifdef USE_VML
+/*TODO: FIX */
+#if defined USE_VML || defined USE_VECLIB  
                         (ex_uses_vml ? (NPY_ITER_CONTIG|NPY_ITER_ALIGNED) : 0)|
 #endif
 #ifndef USE_UNALIGNED_ACCESS

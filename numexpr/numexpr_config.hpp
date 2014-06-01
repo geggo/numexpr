@@ -47,6 +47,10 @@
 #include "mkl_service.h"
 #endif
 
+#ifdef USE_VECLIB
+#include "vForce.h"
+#endif
+
 #ifdef _WIN32
   #ifndef __MINGW32__
     #include "missing_posix_functions.hpp"

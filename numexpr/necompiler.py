@@ -763,5 +763,7 @@ def evaluate(ex, local_dict=None, global_dict=None,
         compiled_ex = _numexpr_cache[numexpr_key] = \
             NumExpr(ex, signature, **context)
     kwargs = {'out': out, 'order': order, 'casting': casting,
-              'ex_uses_vml': ex_uses_vml}
+              #'ex_uses_vml': ex_uses_vml,
+              'ex_uses_vml': True, #TODO: HACK
+              }
     return compiled_ex(*arguments, **kwargs)

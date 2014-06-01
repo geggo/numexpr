@@ -119,6 +119,19 @@ def setup_package():
             else:
                 mkl_config_data = {}
 
+            #print "MKL", mkl_config_data
+
+            veclib_config_data = {
+                'include_dirs': ['/System/Library/Frameworks/veclib.framework/Headers',],
+                'extra_compile_args': ['-msse3','-DUSE_VECLIB',
+                                       #'-DNPY_NO_DEPRECATED_API=8',
+                                       #'-DNPY_1_7_API_VERSION',
+                                       '-w',
+                                      ],
+                'extra_link_args': ['-Wl,-framework', '-Wl,veclib'],
+                }
+            
+
             #setup information for C extension
             if os.name == 'nt':
                 pthread_win = ['numexpr/win32/pthread.c']
@@ -139,6 +152,7 @@ def setup_package():
                 'extra_compile_args': ['-funroll-all-loops', ],
             }
             dict_append(extension_config_data, **mkl_config_data)
+            dict_append(extension_config_data, **veclib_config_data)
             if 'library_dirs' in mkl_config_data:
                 library_dirs = ':'.join(mkl_config_data['library_dirs'])
             config.add_extension('interpreter', **extension_config_data)
