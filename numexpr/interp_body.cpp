@@ -313,8 +313,10 @@
 #ifdef USE_VML
             VEC_ARG2_VML(vsDiv(BLOCK_SIZE,
                                (float*)x1, (float*)x2, (float*)dest));
+/*
 #elif defined USE_VECLIB
 	    VEC_ARG2_VECLIB(vvdivf((float*)dest, (float*)x1, (float*)x2, &block_size));
+*/
 #else
             VEC_ARG2(f_dest = f1 / f2);
 #endif
@@ -322,8 +324,10 @@
 #ifdef USE_VML
             VEC_ARG2_VML(vsPow(BLOCK_SIZE,
                                (float*)x1, (float*)x2, (float*)dest));
+/*
 #elif defined USE_VECLIB
 	    VEC_ARG2_VECLIB(vvpowf((float*)dest, (float*)x2, (float*)x1, &block_size));
+*/
 #else
             VEC_ARG2(f_dest = powf(f1, f2));
 #endif
@@ -374,8 +378,10 @@
 #ifdef USE_VML
             VEC_ARG2_VML(vdDiv(BLOCK_SIZE,
                                (double*)x1, (double*)x2, (double*)dest));
+/*
 #elif defined USE_VECLIB
 	    VEC_ARG2_VECLIB(vvdiv((double*)dest, (double*)x1, (double*)x2, &block_size));
+*/
 #else
             VEC_ARG2(d_dest = d1 / d2);
 #endif
@@ -383,8 +389,10 @@
 #ifdef USE_VML
             VEC_ARG2_VML(vdPow(BLOCK_SIZE,
                                (double*)x1, (double*)x2, (double*)dest));
+/*
 #elif defined USE_VECLIB
 	    VEC_ARG2_VECLIB(vvpow((double*)dest, (double*)x2, (double*)x1, &block_size));
+*/
 #else
             VEC_ARG2(d_dest = pow(d1, d2));
 #endif
