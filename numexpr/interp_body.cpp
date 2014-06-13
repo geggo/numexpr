@@ -313,10 +313,8 @@
 #ifdef USE_VML
             VEC_ARG2_VML(vsDiv(BLOCK_SIZE,
                                (float*)x1, (float*)x2, (float*)dest));
-/*
 #elif defined USE_VECLIB
 	    VEC_ARG2_VECLIB(vvdivf((float*)dest, (float*)x1, (float*)x2, &veclib_block_size));
-*/
 #else
             VEC_ARG2(f_dest = f1 / f2);
 #endif
@@ -324,10 +322,8 @@
 #ifdef USE_VML
             VEC_ARG2_VML(vsPow(BLOCK_SIZE,
                                (float*)x1, (float*)x2, (float*)dest));
-/*
 #elif defined USE_VECLIB
 	    VEC_ARG2_VECLIB(vvpowf((float*)dest, (float*)x2, (float*)x1, &veclib_block_size));
-*/
 #else
             VEC_ARG2(f_dest = powf(f1, f2));
 #endif
@@ -336,10 +332,8 @@
         case OP_SQRT_FF:
 #ifdef USE_VML
             VEC_ARG1_VML(vsSqrt(BLOCK_SIZE, (float*)x1, (float*)dest));
-/*
 #elif defined USE_VECLIB
-	    VEC_ARG1_VECLIB(vvsqrt((double*)dest, (double*)x1, &veclib_block_size));
-*/
+	    VEC_ARG1_VECLIB(vvsqrtf((float*)dest, (float*)x1, &veclib_block_size));
 #else
             VEC_ARG1(f_dest = sqrtf(f1));
 #endif
@@ -360,10 +354,8 @@
             VEC_ARG2_VML(functions_fff_vml[arg3](BLOCK_SIZE,
                                                  (float*)x1, (float*)x2,
                                                  (float*)dest));
-/*
 #elif defined USE_VECLIB
 	    VEC_ARG2_VECLIB(functions_fff_veclib[arg3]((float*)dest, (float*)x1, (float*)x2, &veclib_block_size));
-*/
 #else
             VEC_ARG2(f_dest = functions_fff[arg3](f1, f2));
 #endif
@@ -382,10 +374,8 @@
 #ifdef USE_VML
             VEC_ARG2_VML(vdDiv(BLOCK_SIZE,
                                (double*)x1, (double*)x2, (double*)dest));
-/*
 #elif defined USE_VECLIB
 	    VEC_ARG2_VECLIB(vvdiv((double*)dest, (double*)x1, (double*)x2, &veclib_block_size));
-*/
 #else
             VEC_ARG2(d_dest = d1 / d2);
 #endif
@@ -393,10 +383,8 @@
 #ifdef USE_VML
             VEC_ARG2_VML(vdPow(BLOCK_SIZE,
                                (double*)x1, (double*)x2, (double*)dest));
-/*
 #elif defined USE_VECLIB
 	    VEC_ARG2_VECLIB(vvpow((double*)dest, (double*)x2, (double*)x1, &veclib_block_size));
-*/
 #else
             VEC_ARG2(d_dest = pow(d1, d2));
 #endif
@@ -405,10 +393,8 @@
         case OP_SQRT_DD:
 #ifdef USE_VML
             VEC_ARG1_VML(vdSqrt(BLOCK_SIZE, (double*)x1, (double*)dest));
-/*
 #elif defined USE_VECLIB
 	    VEC_ARG1_VECLIB(vvsqrt((double*)dest, (double*)x1, &veclib_block_size));
-*/
 #else
             VEC_ARG1(d_dest = sqrt(d1));
 #endif
