@@ -7,7 +7,7 @@
 #  define USE_UNALIGNED_ACCESS 1
 #endif
 
-#ifdef USE_VML
+#if defined USE_VML | defined USE_VECLIB
 /* The values below have been tuned for a nowadays Core2 processor */
 /* Note: with VML functions a larger block size (e.g. 4096) allows to make use
  * of the automatic multithreading capabilities of the VML library */
