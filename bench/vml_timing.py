@@ -85,11 +85,13 @@ from numpy import rec as records
 from numexpr import %s
 
 # Initialize a recarray of 16 MB in size
-r=records.array(None, formats='a%s,i4,f4,f8', shape=%s)
+r=records.array(None, formats='a%s,i4,f4,f4,f8,f8', shape=%s) #was: f4, f8
 c1 = r.field('f0')%s
 i2 = r.field('f1')%s
 f3 = r.field('f2')%s
 f4 = r.field('f3')%s
+d5 = r.field('f4')%s
+d6 = r.field('f5')%s
 c1[:] = "a"
 i2[:] = arange(%s)/1000
 f3[:] = linspace(0,1,len(i2))
@@ -98,24 +100,30 @@ f4[:] = f3*1.23
 
 eval_method = "evaluate"
 setupNP_contiguous = setupNP % ((eval_method, 4, array_size,) + \
-                               (".copy()",)*4 + \
+                               (".copy()",)*6 + \
                                (array_size,))
 setupNP_strided = setupNP % (eval_method, 4, array_size,
-                             "", "", "", "", array_size)
+                             "", "", "", "", "", "", array_size)
 setupNP_unaligned = setupNP % (eval_method, 1, array_size,
-                               "", "", "", "", array_size)
+                               "", "", "", "", "", "", array_size)
 
 
 expressions = []
 expressions.append('i2 > 0')
-expressions.append('f3+f4')
-expressions.append('f3+i2')
+#expressions.append('f3+f4')
+#expressions.append('f3+i2')
+expressions.append('f3/f4')
+expressions.append('d5/d6')
+expressions.append('sqrt(f3)')
+expressions.append('sqrt(d5)')
 expressions.append('exp(f3)')
 expressions.append('log(exp(f3)+1)/f4')
 expressions.append('0.1*i2 > arctan2(f3, f4)')
 expressions.append('sqrt(f3**2 + f4**2) > 1')
 expressions.append('sin(f3)>cos(f4)')
 expressions.append('f3**f4')
+expressions.append('d5**d6')
+
 
 def compare(expression=False):
     if expression:
@@ -135,6 +143,8 @@ if __name__ == '__main__':
 
     numexpr.set_vml_accuracy_mode('low')
     numexpr.set_vml_num_threads(2)
+
+    #numexpr.set_num_threads(2)
 
     if len(sys.argv) > 1:
         expression = sys.argv[1]
