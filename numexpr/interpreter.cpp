@@ -642,7 +642,7 @@ void free_temps_space(const vm_params& params, char **mem)
 /* Serial/parallel task iterator version of the VM engine */
 int vm_engine_iter_task(NpyIter *iter, npy_intp *memsteps,
                     const vm_params& params,
-                    int *pc_error, char **errmsg)
+                    int *pc_error, const char **errmsg)
 {
     char **mem = params.mem;
     NpyIter_IterNextFunc *iternext;
@@ -650,7 +650,7 @@ int vm_engine_iter_task(NpyIter *iter, npy_intp *memsteps,
     char **iter_dataptr;
     npy_intp *iter_strides;
 
-    iternext = NpyIter_GetIterNext(iter, errmsg);
+    iternext = NpyIter_GetIterNext(iter, (char**)errmsg);
     if (iternext == NULL) {
         return -1;
     }
