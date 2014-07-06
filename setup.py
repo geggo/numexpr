@@ -125,7 +125,7 @@ def setup_package():
                 'include_dirs': ['/System/Library/Frameworks/veclib.framework/Headers',],
                 'extra_compile_args': ['-msse3',
                                        '-DUSE_VECLIB',
-                                       '-DNPY_NO_DEPRECATED_API=8', #fail on deprecated API
+                                       '-DNPY_NO_DEPRECATED_API=7', #fail on deprecated API
                                        #'-w',
                                       ],
                 'extra_link_args': ['-Wl,-framework', '-Wl,veclib'],

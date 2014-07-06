@@ -7,6 +7,16 @@
   See LICENSE.txt for details about copyright and rights to use.
 **********************************************************************/
 
+
+#ifdef __clang__
+#pragma clang diagnostic ignored "-Wdeprecated-writable-strings"
+#endif
+
+#ifdef __GNUC__
+#pragma GCC diagnostic ignored "-Wwrite-strings"
+#endif
+
+
 #include "module.hpp"
 #include <structmember.h>
 
